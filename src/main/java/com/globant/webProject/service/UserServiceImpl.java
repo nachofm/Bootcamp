@@ -1,9 +1,11 @@
 package com.globant.webProject.service;
 
 import com.globant.webProject.dao.IUserDao;
+import com.globant.webProject.exceptions.BadRequestException;
 import com.globant.webProject.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 @Service
@@ -15,12 +17,32 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User getUser(int id) {
-        return userDao.findById(id).get();
+        if (userDao.findById(id).isPresent()){
+            return userDao.findById(id).get();
+        }
+        else{
+
+            String code ="001";
+            String message = "Wrong user id.";
+            throw new BadRequestException(code,message);
+
+        }
+
     }
 
     @Override
     public List<User> getAll() {
-        return (List<User>) userDao.findAll();
+        if ((List<User>) userDao.findAll() == null)
+        {
+            String code ="002";
+            String message = "List is null.";
+            throw new BadRequestException(code,message);
+        }
+        else
+        {
+            return (List<User>) userDao.findAll();
+        }
+
     }
 
     @Override
@@ -34,6 +56,12 @@ public class UserServiceImpl implements IUserService {
             user.setId(id);
             userDao.save(user);
         }
+        else
+        {
+            String code ="003";
+            String message = "User does not exist.";
+            throw new BadRequestException(code,message);
+        }
 
     }
 
@@ -42,6 +70,15 @@ public class UserServiceImpl implements IUserService {
         if (userDao.findById(id).isPresent()){
         userDao.deleteById(id);
         }
+        else
+        {
+            String code ="004";
+            String message = "User does not exist.";
+            throw new BadRequestException(code,message);
+
+        }
+
 
     }
+
 }
