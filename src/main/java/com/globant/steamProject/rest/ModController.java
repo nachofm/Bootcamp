@@ -18,8 +18,8 @@ public class ModController {
     IModService modService;
 
     @PostMapping(path="/addNewMod")
-    public @ResponseBody void addNewMod (@Valid @RequestBody ModRequest modRequest) {
-        modService.createMod(modRequest);
+    public @ResponseBody Mod addNewMod (@Valid @RequestBody ModRequest modRequest) {
+        return modService.createMod(modRequest);
     }
 
     @GetMapping(path="/findModById/{id}")
@@ -36,8 +36,8 @@ public class ModController {
 
 
     @PutMapping(path="/modifyMod/{id}")
-    public @ResponseBody void modifyMod(@RequestBody ModRequest modRequest, @PathVariable(value="id") long id  ) {
-        modService.modifyMod(modRequest,id);
+    public @ResponseBody Mod modifyMod(@RequestBody ModRequest modRequest, @PathVariable(value="id") long id  ) {
+        return modService.modifyMod(modRequest,id);
 
     }
 

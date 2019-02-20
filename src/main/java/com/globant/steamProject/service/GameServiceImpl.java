@@ -17,7 +17,7 @@ public class GameServiceImpl implements IGameService {
     private IGameDao gameDao;
 
     @Override
-    public void createGame(GameRequest gameRequest) {
+    public Game createGame(GameRequest gameRequest) {
         Game game = new Game();
         game.setName(gameRequest.getName());
         Description description = new Description();
@@ -25,8 +25,27 @@ public class GameServiceImpl implements IGameService {
         description.setWebDescription(gameRequest.getWebDescription());
         game.setDescription(description);
         game.setActive(true);
-        gameDao.save(game);
-        throw new ResourceException(HttpStatus.OK, "Game saved successfuly.");
+        return gameDao.save(game);
+    }
+
+    @Override
+    public Game modifyGame(GameRequest gameRequest, long id) {
+        if (gameDao.findById(id).isPresent()) {
+            Game game = gameDao.findById(id).get();
+            Description description = new Description();
+            game.setName(gameRequest.getName());
+
+            description.setMobileDescription(gameRequest.getMobileDescription());
+            description.setWebDescription(gameRequest.getWebDescription());
+            game.setDescription(description);
+            game.setActive(true);
+
+            return gameDao.save(game);
+        }
+        else
+        {
+            throw new ResourceException(HttpStatus.NOT_FOUND, "We were unable to find the game.");
+        }
 
     }
 
@@ -67,11 +86,6 @@ public class GameServiceImpl implements IGameService {
 
     }
 
-    @Override
-    public void save(Game user) {
-        gameDao.save(user);
-
-    }
 
     @Override
     public void deleteById(Long id) {
@@ -89,18 +103,5 @@ public class GameServiceImpl implements IGameService {
 
     }
 
-    @Override
-    public void modifyGame(GameRequest gameRequest, long id) {
-        if (gameDao.findById(id).isPresent()) {
-            Game game = gameDao.findById(id).get();
-            game.setName(gameRequest.getName());
-            gameDao.save(game);
-            throw new ResourceException(HttpStatus.OK, "Game modified successfuly.");
-        }
-        else
-        {
-            throw new ResourceException(HttpStatus.NOT_FOUND, "We were unable to find the game.");
-        }
 
-    }
 }

@@ -23,6 +23,55 @@ public class ModServiceImpl implements IModService {
     @Autowired
     private IGameDao gameDao;
 
+    @Override
+    public Mod createMod(ModRequest modRequest) {
+        Game game = gameDao.findById(modRequest.getIdGame()).orElse(null);
+        if(game == null)
+        {
+            throw new ResourceException(HttpStatus.NOT_FOUND, "We were unable to find the mod.");
+        }
+        else
+        {
+            Mod mod = new Mod();
+            Description description = new Description();
+
+            description.setMobileDescription(modRequest.getMobileDescription());
+            description.setWebDescription(modRequest.getWebDescription());
+            mod.setDescription(description);
+
+            mod.setGame(game);
+            mod.setName(modRequest.getName());
+            mod.setActive(true);
+            return modDao.save(mod);
+        }
+
+    }
+
+
+    @Override
+    public Mod modifyMod(ModRequest modRequest, long id) {
+        Game game = gameDao.findById(modRequest.getIdGame()).orElse(null);
+        if (modDao.findById(id).isPresent() && game!= null) {
+
+            Mod mod = modDao.findById(id).get();
+            Description description = new Description();
+
+            description.setMobileDescription(modRequest.getMobileDescription());
+            description.setWebDescription(modRequest.getWebDescription());
+            mod.setDescription(description);
+
+            mod.setGame(game);
+            mod.setName(modRequest.getName());
+            mod.setActive(true);
+            return modDao.save(mod);
+        }
+        else
+        {
+            throw new ResourceException(HttpStatus.NOT_FOUND, "We were unable to find the mod.");
+        }
+
+    }
+
 
     @Override
     public List<Mod> getAllMods() {
@@ -61,11 +110,6 @@ public class ModServiceImpl implements IModService {
         }
     }
 
-    @Override
-    public void save(Mod mod) {
-        modDao.save(mod);
-
-    }
 
     @Override
     public void deleteModById(Long id) {
@@ -83,45 +127,5 @@ public class ModServiceImpl implements IModService {
 
     }
 
-    @Override
-    public void createMod(ModRequest modRequest) {
-        Game game = gameDao.findById(modRequest.getIdGame()).orElse(null);
-        if(game == null)
-        {
-            throw new ResourceException(HttpStatus.NOT_FOUND, "We were unable to find the mod.");
-        }
-        else
-        {
-        Mod mod = new Mod();
-        Description description = new Description();
 
-        description.setMobileDescription(modRequest.getMobileDescription());
-        description.setWebDescription(modRequest.getWebDescription());
-        mod.setDescription(description);
-
-        mod.setGame(game);
-        mod.setName(modRequest.getName());
-        mod.setActive(true);
-        modDao.save(mod);
-        throw new ResourceException(HttpStatus.OK, "Mod saved successfuly.");
-        }
-
-    }
-
-
-    @Override
-    public void modifyMod(ModRequest modRequest, long id) {
-        if (modDao.findById(id).isPresent()) {
-
-            Mod mod = modDao.findById(id).get();
-            mod.setName(modRequest.getName());
-            modDao.save(mod);
-            throw new ResourceException(HttpStatus.OK, "Mod modified successfuly.");
-        }
-        else
-        {
-            throw new ResourceException(HttpStatus.NOT_FOUND, "We were unable to find the mod.");
-        }
-
-    }
 }

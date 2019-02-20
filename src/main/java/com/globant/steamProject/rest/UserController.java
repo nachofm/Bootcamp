@@ -7,9 +7,6 @@ import com.globant.steamProject.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.List;
-
 @RestController
 @RequestMapping(path="/user")
 public class UserController {
@@ -17,8 +14,9 @@ public class UserController {
     IUserService userService;
 
     @PostMapping(path="/addNewUser")
-    public @ResponseBody void addNewUser(@RequestBody UserRequest userRequest) {
-        userService.createUser(userRequest);
+    public @ResponseBody User addNewUser(@RequestBody UserRequest userRequest) {
+        return userService.createUser(userRequest);
+
 
     }
 
@@ -40,8 +38,8 @@ public class UserController {
 
 
     @PutMapping(path="/modifyUser/{id}")
-    public @ResponseBody void UpdateUser(@RequestBody UserRequest userRequest, @PathVariable(value="id") long id  ) {
-            userService.modifyUser(userRequest,id);
+    public @ResponseBody User UpdateUser(@RequestBody UserRequest userRequest, @PathVariable(value="id") long id  ) {
+            return userService.modifyUser(userRequest,id);
 
     }
 

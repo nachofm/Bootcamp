@@ -1,11 +1,17 @@
 package com.globant.steamProject.payload;
 
+import javax.validation.Valid;
+
 public class ModRequest {
 
     private long id;
+    @Valid
     private String name;
+    @Valid
     private String mobileDescription;
+    @Valid
     private String webDescription;
+    @Valid
     private long idGame;
 
     public long getId() {

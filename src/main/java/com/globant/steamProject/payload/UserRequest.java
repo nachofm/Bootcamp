@@ -1,9 +1,13 @@
 package com.globant.steamProject.payload;
 
+import javax.validation.Valid;
+
 public class UserRequest {
 
     private long id;
+    @Valid
     private String name;
+    @Valid
     private Long item;
 
     public long getId() {

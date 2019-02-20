@@ -11,8 +11,7 @@ public interface IGameService {
     public List<Game> getAll();
     public Game findGameById(Long id);
     public Game findGameByName(String name);
-    public void save(Game game);
     public void deleteById(Long id);
-    public void createGame(GameRequest gameRequest);
-    public void modifyGame(GameRequest gameRequest, long id);
+    public Game createGame(GameRequest gameRequest);
+    public Game modifyGame(GameRequest gameRequest, long id);
 }

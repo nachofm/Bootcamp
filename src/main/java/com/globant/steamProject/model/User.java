@@ -16,6 +16,7 @@ import java.util.Set;
 public class User extends BaseNamedEntity{
 
     @ManyToMany(cascade = CascadeType.ALL)
+    //the persistence will propagate (cascade) all EntityManager operations to the relating entities.
     @JoinTable(
             name="transactions",
             joinColumns=@JoinColumn(name="user_id", referencedColumnName="ID"),

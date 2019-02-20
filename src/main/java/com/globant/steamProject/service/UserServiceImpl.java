@@ -26,12 +26,11 @@ public class UserServiceImpl implements IUserService {
     IModDao modDao;
 
     @Override
-    public void createUser(UserRequest userRequest) {
+    public User createUser(UserRequest userRequest) {
         User user = new User();
         user.setName(userRequest.getName());
         user.setActive(true);
-        userDao.save(user);
-        throw new ResourceException(HttpStatus.OK, "User saved successfuly.");
+        return userDao.save(user);
     }
 
     @Override
@@ -73,36 +72,28 @@ public class UserServiceImpl implements IUserService {
 
     }
 
-    @Override
-    public void save(User user) {
-        userDao.save(user);
-
-    }
 
     @Override
     public void deleteById(Long id) {
-        if (userDao.findById(id).isPresent()) {
-            User user = userDao.findById(id).orElse(null);
+
+            User user = userDao.findById(id).orElseThrow
+                    (()->new ResourceException(HttpStatus.NOT_FOUND, "User not found."));
             user.setActive(false);
             user.setId(id);
             userDao.save(user);
-            throw new ResourceException(HttpStatus.OK, "User deleted successfuly.");
-        }
-        else
-        {
-            throw new ResourceException(HttpStatus.NOT_FOUND, "We were unable to find the user.");
-        }
+
 
     }
 
     @Override
-    public void modifyUser(UserRequest userRequest, long id) {
+    public User modifyUser(UserRequest userRequest, long id) {
         if (userDao.findById(id).isPresent()) {
 
             User user = userDao.findById(id).get();
             user.setName(userRequest.getName());
-            userDao.save(user);
-            throw new ResourceException(HttpStatus.OK, "User modified successfuly.");
+            user.setActive(true);
+            return userDao.save(user);
+
         }
         else
         {
@@ -113,7 +104,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public HttpStatus saveGameTransaction(TransactionRequest transactionRequest) {
+    public void saveGameTransaction(TransactionRequest transactionRequest) {
         User user = userDao.findById(transactionRequest.getIdUser()).orElse(null);
         Game game = gameDao.findById(transactionRequest.getIdGame()).orElse(null);
 
@@ -122,7 +113,6 @@ public class UserServiceImpl implements IUserService {
             user.getItems().add(game);
             userDao.save(user);
             throw new ResourceException(HttpStatus.OK, "Transaction successful.");
-
         }
         else
         {

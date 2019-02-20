@@ -10,8 +10,7 @@ public interface IModService {
     public List<Mod> getAllMods();
     public Mod findModById(Long id);
     public Mod findModByName(String name);
-    public void save(Mod mod);
     public void deleteModById(Long id);
-    public void createMod(ModRequest modRequest);
-    public void modifyMod(ModRequest modRequest, long id);
+    public Mod createMod(ModRequest modRequest);
+    public Mod modifyMod(ModRequest modRequest, long id);
 }

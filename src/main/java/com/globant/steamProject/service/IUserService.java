@@ -13,10 +13,9 @@ public interface IUserService {
     public List<User> getAll();
     public User findUserById(Long id);
     public User findUserByName(String name);
-    public void save(User user);
     public void deleteById(Long id);
-    public void createUser(UserRequest userRequest);
-    public void modifyUser(UserRequest userRequest, long id);
-    public HttpStatus saveGameTransaction(TransactionRequest transactionRequest);
+    public User createUser(UserRequest userRequest);
+    public User modifyUser(UserRequest userRequest, long id);
+    public void saveGameTransaction(TransactionRequest transactionRequest);
     public void saveModTransaction(TransactionRequest transactionRequest);
 }

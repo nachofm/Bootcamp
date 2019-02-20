@@ -18,8 +18,8 @@ public class GameController {
     IGameService gameService;
 
     @PostMapping(path="/addNewGame")
-    public @ResponseBody void addNewGame(@RequestBody GameRequest gameRequest) {
-        gameService.createGame(gameRequest);
+    public @ResponseBody Game addNewGame(@RequestBody GameRequest gameRequest) {
+        return gameService.createGame(gameRequest);
     }
 
     @GetMapping("/getAllGames")
@@ -32,15 +32,15 @@ public class GameController {
         return gameService.findGameById(id);
     }
 
-    @PutMapping("/deleteGame")
-    public @ResponseBody void DeleteGameById(@RequestBody GameRequest gameRequest ) {
-        gameService.deleteById(gameRequest.getId());
+    @PutMapping("/deleteGame/{id}")
+    public @ResponseBody void DeleteGameById(@PathVariable(value="id") long id) {
+        gameService.deleteById(id);
     }
 
 
     @PutMapping(path="/modifyGame/{id}")
-    public @ResponseBody void modifyGame(@RequestBody GameRequest gameRequest, @PathVariable(value="id") long id  ) {
-        gameService.modifyGame(gameRequest,id);
+    public @ResponseBody Game modifyGame(@RequestBody GameRequest gameRequest, @PathVariable(value="id") long id  ) {
+        return gameService.modifyGame(gameRequest,id);
     }
 
     @GetMapping(path="/getGameByName")

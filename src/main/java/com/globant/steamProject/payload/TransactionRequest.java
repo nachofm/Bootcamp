@@ -1,10 +1,15 @@
 package com.globant.steamProject.payload;
 
+import javax.validation.Valid;
+
 public class TransactionRequest {
 
     private long id;
+    @Valid
     private long idUser;
+    @Valid
     private long idGame;
+    @Valid
     private long idMod;
 
     public long getId() {
